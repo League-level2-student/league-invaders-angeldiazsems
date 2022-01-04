@@ -10,8 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
+Rocketship rocket = new Rocketship(225,450,50,50);
 
-	Timer frameDraw;
+Timer frameDraw;
 
 	Font titleFont = new Font("Arial", Font.PLAIN, 48);
 	Font startFont = new Font("Arial", Font.PLAIN, 20);
@@ -70,6 +71,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	void drawGameState(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
+		rocket.draw(g);
+		
+		
+		
+		
 	}
 
 	void drawEndState(Graphics g) {
@@ -77,7 +83,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
 		g.setFont(titleFont);
 		g.setColor(Color.BLACK);
-		g.drawString("GAME OVER", 20, 100);
+		g.drawString("GAME OVER", 100, 100);
 
 	}
 
@@ -95,55 +101,53 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			updateEndState();
 		}
 		System.out.println("action");
-		// need to add panel re paint
+		repaint();
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (currentState == END) {
-				currentState = MENU;
-			} else {
-				currentState++;
-			}
-		}
-
-		
+		if (arg0.getKeyCode()==KeyEvent.VK_ENTER) {
+		    if (currentState == END) {
+		        currentState = MENU;
+		    } else {
+		        currentState++;
+		    }
+		}  
 		
 		if (arg0.getKeyCode()==KeyEvent.VK_UP) {
-		    System.out.println("UP");
+		    if(rocket.y > HEIGHT) {
+			rocket.up();
+		    }
 		}
 		if(arg0.getKeyCode()==KeyEvent.VK_DOWN) {
-			System.out.println("DOWN");
-		}
-		if(arg0.getKeyCode()==KeyEvent.VK_LEFT) {
-			System.out.println("LEFT");
+			if(rocket.y < 470) {
+			rocket.down();
+			}
 		}
 		if(arg0.getKeyCode()==KeyEvent.VK_RIGHT) {
-			System.out.println();
+			if(rocket.x < 450) {
+			rocket.right();
+			}
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		if(arg0.getKeyCode()==KeyEvent.VK_LEFT) {
+			if(rocket.x > WIDTH) {
+			rocket.left();
+			}
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
+	
 }

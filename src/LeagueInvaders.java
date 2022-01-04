@@ -8,12 +8,12 @@ public class LeagueInvaders {
 		invader.setup();
 	}
 
-	JFrame frame = new JFrame();
-	GamePanel panel = new GamePanel();
+	JFrame frame;
+	GamePanel panel;
 
 	LeagueInvaders() {
-		JFrame frame = new JFrame();
-		GamePanel panel = new GamePanel();
+		this.frame = new JFrame();
+		this.panel = new GamePanel();
 	}
 
 	public static final int WIDTH = 500;
