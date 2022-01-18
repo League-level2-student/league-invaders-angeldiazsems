@@ -4,13 +4,13 @@ import java.util.Random;
 
 public class ObjectManager {
 
-	int rocket;
+	Rocketship rocket;
 	ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	ArrayList<Alien> aliens = new ArrayList<Alien>();
 	Random random = new Random();
 
-	ObjectManager(int Rocketship) {
-		this.rocket = Rocketship;
+	ObjectManager(Rocketship rocket) {
+		this.rocket = rocket;
 	}
 
 	void addProjectile(Projectile projectile) {
@@ -42,8 +42,34 @@ public class ObjectManager {
 	}
 
 	void draw(Graphics g) {
+		rocket.draw(g);
+		for(Alien a : aliens) {
+			draw(g);
+		}
+		for(Projectile p : projectiles)
+		draw(g);
+	}
 
-		
+
+void PurgeObjects() {
+	
+	for(int i = 0; i < aliens.size(); i++) {
+		Alien a = aliens.get(i);
+		if(a.isActive == false) {
+			aliens.remove(i);
+		}
+	}
+	for(int i = 0; i < projectiles.size(); i++) {
+		Projectile p = projectiles.get(i);
+		if(p.isActive == false) {
+		projectiles.remove(i);
+		}
 	}
 
 }
+}
+
+
+
+
+
