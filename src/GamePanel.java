@@ -7,12 +7,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 Rocketship rocket = new Rocketship(225,450,50,50);
 Timer frameDraw;
+Timer alienSpawn;
 ObjectManager objectmanager = new ObjectManager(rocket);
 public static BufferedImage image;
 public static boolean needImage = true;
@@ -41,7 +43,7 @@ void loadImage(String imageFile) {
 		frameDraw = new Timer(1000 / 60, this);
 		frameDraw.start();
 		if (needImage) {
-		    loadImage ("rocket.png");
+		    loadImage ("space.png");
 		}
 	}
 
@@ -89,7 +91,7 @@ void loadImage(String imageFile) {
 
 	void drawGameState(Graphics g) {
 		if(gotImage) {
-		g.drawImage("space.png", 0, LeagueInvaders.HEIGHT, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
+		g.drawImage(image, 0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
 		}
 		objectmanager.draw(g);
 		
@@ -107,6 +109,12 @@ void loadImage(String imageFile) {
 
 	}
 
+	void startGame() {
+		
+		alienSpawn = new Timer(1000, objectmanager);
+		alienSpawn.start();
+		
+	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
@@ -130,10 +138,19 @@ void loadImage(String imageFile) {
 		if (arg0.getKeyCode()==KeyEvent.VK_ENTER) {
 		    if (currentState == END) {
 		        currentState = MENU;
-		    } else {
+		    } 
+		    if(currentState == GAME) {
+		    	currentState = END;
+		    	alienSpawn.stop();
+		    }
+		    if(currentState == MENU) {
+		    	currentState = GAME;
+		    	startGame();
+		    }
+		    else {
 		        currentState++;
 		    }
-		}  
+		}
 		
 		if (arg0.getKeyCode()==KeyEvent.VK_UP) {
 		    if(rocket.y > HEIGHT) {
@@ -155,6 +172,15 @@ void loadImage(String imageFile) {
 			rocket.left();
 			}
 		}
+		
+		if(arg0.getKeyCode()==KeyEvent.VK_SPACE) {
+			if(currentState==GAME) {
+				
+				objectmanager.addProjectile(rocket.getProjectile());
+				
+			}
+		}
+		
 	}
 
 	@Override
