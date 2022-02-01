@@ -16,12 +16,13 @@ this.x = x;
 this.y =y;
 this.height = height;
 this.width = width;
+collisionBox = new Rectangle(x,y,width, height);
 
 }
 
 void update(){
 	
-	
+	collisionBox.setBounds(x, y, width, height);
 	
 }
 

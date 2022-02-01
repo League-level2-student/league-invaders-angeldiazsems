@@ -12,25 +12,25 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
-Rocketship rocket = new Rocketship(225,450,50,50);
-Timer frameDraw;
-Timer alienSpawn;
-ObjectManager objectmanager = new ObjectManager(rocket);
-public static BufferedImage image;
-public static boolean needImage = true;
-public static boolean gotImage = false;	
+	Rocketship rocket = new Rocketship(225, 450, 50, 50);
+	Timer frameDraw;
+	Timer alienSpawn;
+	ObjectManager objectmanager = new ObjectManager(rocket);
+	public static BufferedImage image;
+	public static boolean needImage = true;
+	public static boolean gotImage = false;
 
-void loadImage(String imageFile) {
-    if (needImage) {
-        try {
-            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
-	    gotImage = true;
-        } catch (Exception e) {
-            
-        }
-        needImage = false;
-    }
-}
+	void loadImage(String imageFile) {
+		if (needImage) {
+			try {
+				image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+				gotImage = true;
+			} catch (Exception e) {
+
+			}
+			needImage = false;
+		}
+	}
 
 	Font titleFont = new Font("Arial", Font.PLAIN, 48);
 	Font startFont = new Font("Arial", Font.PLAIN, 20);
@@ -43,7 +43,7 @@ void loadImage(String imageFile) {
 		frameDraw = new Timer(1000 / 60, this);
 		frameDraw.start();
 		if (needImage) {
-		    loadImage ("space.png");
+			loadImage("space.png");
 		}
 	}
 
@@ -68,7 +68,10 @@ void loadImage(String imageFile) {
 	}
 
 	void updateGameState() {
-	objectmanager.update();
+		objectmanager.update();
+		if (rocket.isActive == false) {
+			currentState = END;
+		}
 	}
 
 	void updateEndState() {
@@ -90,14 +93,11 @@ void loadImage(String imageFile) {
 	}
 
 	void drawGameState(Graphics g) {
-		if(gotImage) {
-		g.drawImage(image, 0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
+		if (gotImage) {
+			g.drawImage(image, 0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
 		}
 		objectmanager.draw(g);
-		
-		
-		
-		
+
 	}
 
 	void drawEndState(Graphics g) {
@@ -110,11 +110,12 @@ void loadImage(String imageFile) {
 	}
 
 	void startGame() {
-		
+
 		alienSpawn = new Timer(1000, objectmanager);
 		alienSpawn.start();
-		
+
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
@@ -135,65 +136,66 @@ void loadImage(String imageFile) {
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		if (arg0.getKeyCode()==KeyEvent.VK_ENTER) {
-		    if (currentState == END) {
-		        currentState = MENU;
-		    } 
-		    if(currentState == GAME) {
-		    	currentState = END;
-		    	alienSpawn.stop();
-		    }
-		    if(currentState == MENU) {
-		    	currentState = GAME;
-		    	startGame();
-		    }
-		    else {
-		        currentState++;
-		    }
-		}
-		
-		if (arg0.getKeyCode()==KeyEvent.VK_UP) {
-		    if(rocket.y > HEIGHT) {
-			rocket.up();
-		    }
-		}
-		if(arg0.getKeyCode()==KeyEvent.VK_DOWN) {
-			if(rocket.y < 470) {
-			rocket.down();
+		if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+			if (currentState == MENU) {
+				currentState = GAME;
+				startGame();
 			}
-		}
-		if(arg0.getKeyCode()==KeyEvent.VK_RIGHT) {
-			if(rocket.x < 450) {
-			rocket.right();
-			}
-		}
-		if(arg0.getKeyCode()==KeyEvent.VK_LEFT) {
-			if(rocket.x > WIDTH) {
-			rocket.left();
-			}
-		}
-		
-		if(arg0.getKeyCode()==KeyEvent.VK_SPACE) {
-			if(currentState==GAME) {
+			
+			if (currentState == END) {
+				rocket.isActive = true;
 				
+			} 
+			if (currentState == END) {
+				currentState = MENU;
+				alienSpawn.stop();
+			}
+			else {
+				currentState++;
+			}
+		}
+
+		if (arg0.getKeyCode() == KeyEvent.VK_UP) {
+			if (rocket.y > HEIGHT) {
+				rocket.up();
+			}
+		}
+		if (arg0.getKeyCode() == KeyEvent.VK_DOWN) {
+			if (rocket.y < 470) {
+				rocket.down();
+			}
+		}
+		if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+			if (rocket.x < 450) {
+				rocket.right();
+			}
+		}
+		if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
+			if (rocket.x > WIDTH) {
+				rocket.left();
+			}
+		}
+
+		if (arg0.getKeyCode() == KeyEvent.VK_SPACE) {
+			if (currentState == GAME) {
+
 				objectmanager.addProjectile(rocket.getProjectile());
-				
+
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
 }
