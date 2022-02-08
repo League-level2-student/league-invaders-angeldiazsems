@@ -93,6 +93,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void drawGameState(Graphics g) {
+		
+	
 		if (gotImage) {
 			g.drawImage(image, 0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
 		}
@@ -129,7 +131,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (currentState == END) {
 			updateEndState();
 		}
-		System.out.println("action");
+		objectmanager.getScore();
+		System.out.println(objectmanager.score);
 		repaint();
 	}
 
@@ -137,21 +140,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (currentState == MENU) {
-				currentState = GAME;
-				startGame();
-			}
-			
-			if (currentState == END) {
-				rocket.isActive = true;
-				
-			} 
 			if (currentState == END) {
 				currentState = MENU;
-				alienSpawn.stop();
 			}
+			
+			
 			else {
 				currentState++;
+
+				if (currentState == GAME) {
+					startGame();
+				}
+				
+				if(currentState == END) {
+					Rocketship rocket = new Rocketship(225, 450, 50, 50);
+					ObjectManager objectmanager = new ObjectManager(rocket);
+					startGame();
+				}
+				
+				
 			}
 		}
 
