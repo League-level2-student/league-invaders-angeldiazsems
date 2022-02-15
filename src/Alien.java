@@ -9,7 +9,8 @@ public class Alien extends GameObject{
 	Alien(int x, int y, int height, int width) {
 		super(x, y, height, width);
 		// TODO Auto-generated constructor stub
-		speed = 1;
+		speed = 10;
+		
 		if (needImage) {
 		    loadImage ("alien.png");
 		}
@@ -39,12 +40,12 @@ public class Alien extends GameObject{
 		
 	}
 	void draw(Graphics g) {
-		
 		if (gotImage) {
 			g.drawImage(image, x, y, width, height, null);
-		} else {
+		} 
+		else {
 			g.setColor(Color.yellow);
-			g.fillRect(x, y, width, height);
+			g.fillRect(collisionBox.x,collisionBox.y, width, height);
 		}
 		
 		

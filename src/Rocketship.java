@@ -9,7 +9,7 @@ public class Rocketship extends GameObject{
 	Rocketship(int x, int y, int height, int width) {
 		super(x, y, height, width);
 		// TODO Auto-generated constructor stub
-		speed = 20;
+		speed = 10;
 		if (needImage) {
 		    loadImage ("rocket.png");
 		}
@@ -39,15 +39,19 @@ public Projectile getProjectile() {
 	return new Projectile(x+width/2,y,10,10);
 }
 
-
+void update() {
+	super.update();
+	
+}
 
 
 void draw(Graphics g) {
 	if (gotImage) {
 		g.drawImage(image, x, y, width, height, null);
+		
 	} else {
 		g.setColor(Color.BLUE);
-		g.fillRect(x, y, width, height);
+		g.fillRect(collisionBox.x, collisionBox.y, width, height);
 	}
 }	
 

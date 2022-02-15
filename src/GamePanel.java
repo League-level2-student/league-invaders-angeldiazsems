@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -108,14 +109,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setFont(titleFont);
 		g.setColor(Color.BLACK);
 		g.drawString("GAME OVER", 100, 100);
-
+		
 	}
 
 	void startGame() {
-
+if(currentState == GAME) {
 		alienSpawn = new Timer(1000, objectmanager);
 		alienSpawn.start();
-
+}
 	}
 
 	@Override
@@ -131,8 +132,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (currentState == END) {
 			updateEndState();
 		}
-		objectmanager.getScore();
-		System.out.println(objectmanager.score);
 		repaint();
 	}
 
@@ -148,14 +147,24 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			else {
 				currentState++;
 
+				
+				if(currentState == MENU) {
+					
+					objectmanager.score = 0;
+					Rocketship rocket = new Rocketship(225, 450, 50, 50);
+					ObjectManager objectmanager = new ObjectManager(rocket);
+					currentState = GAME;
+				}
+				
 				if (currentState == GAME) {
 					startGame();
 				}
 				
+				
 				if(currentState == END) {
-					Rocketship rocket = new Rocketship(225, 450, 50, 50);
-					ObjectManager objectmanager = new ObjectManager(rocket);
-					startGame();
+					JOptionPane.showMessageDialog(null, "You got "+objectmanager.score+" aliens");
+					objectmanager.score = 0;
+					
 				}
 				
 				
@@ -190,7 +199,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 			}
 		}
-
+		if(currentState == MENU) {
+		if(arg0.getKeyCode() == KeyEvent.VK_SPACE ) {
+			JOptionPane.showMessageDialog(null, "Use the arrow keys to move, and space to shoot");
+		}
+		
+		}
 	}
 
 	@Override
